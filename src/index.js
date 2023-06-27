@@ -1,6 +1,7 @@
 const express=require('express');
 
-const {ServerConfig}=require('./config');
+const { ServerConfig }=require('./config');
+const MessageQueue = require('./utils/messageQueue');
 
 const apiRoutes=require('./routes');
 
@@ -12,8 +13,10 @@ app.use(express.urlencoded({extended:true}));
 app.use('/api',apiRoutes);
 app.use('/bookingService/api',apiRoutes);
 
-app.listen(ServerConfig.PORT, () => {
+app.listen(ServerConfig.PORT, async() => {
     console.log(`Successfully started the server on PORT : ${ServerConfig.PORT}`);
+    await MessageQueue.connectQueue();
+    console.log("queue connected")
 });
 
 
